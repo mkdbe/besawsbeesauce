@@ -20,7 +20,14 @@ export default function HomePage() {
       <section className={`relative py-24 px-4 overflow-hidden ${!hasImage ? 'bg-gradient-to-br from-amber-100 to-amber-200' : ''}`}>
         {hasImage && (
           <>
-            <Image src={heroImage} alt="" fill className="object-cover" priority />
+            <picture>
+              <source
+                media="(max-width: 640px)"
+                srcSet={heroImage.replace(/(\.[^.]+)$/, '-mobile$1')}
+                type="image/webp"
+              />
+              <Image src={heroImage} alt="" fill className="object-cover" priority sizes="100vw" />
+            </picture>
             <div className="absolute inset-0 bg-amber-950/60" />
           </>
         )}

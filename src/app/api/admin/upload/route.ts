@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
   await writeFile(tempPath, Buffer.from(await file.arrayBuffer()))
 
   // Optimize + create mobile variant in background (does not block response)
-  const finalPath = path.join(uploadDir, `${stem}.webp`)
   processUploadedImage(tempPath).catch((err) => console.error('image-process error:', err))
 
   return NextResponse.json({ url: `/api/uploads/${stem}.webp` })
