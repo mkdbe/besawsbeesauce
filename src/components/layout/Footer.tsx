@@ -33,7 +33,6 @@ export default function Footer() {
           <p className="font-semibold text-amber-50 mb-3">Info</p>
           <ul className="space-y-2 text-sm">
             <li><Link href="/about" className="text-amber-300 hover:text-amber-100 transition-colors">Our Story</Link></li>
-            <li><Link href="/blog" className="text-amber-300 hover:text-amber-100 transition-colors">Blog</Link></li>
             <li><Link href="/contact" className="text-amber-300 hover:text-amber-100 transition-colors">Contact</Link></li>
           </ul>
         </div>
