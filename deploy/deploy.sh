@@ -16,4 +16,10 @@ echo "==> Restarting service..."
 sudo systemctl restart "$SERVICE"
 sudo systemctl status "$SERVICE" --no-pager
 
+echo "==> Pushing to GitHub..."
+cd "$APP_DIR"
+git add -A
+git diff --cached --quiet || git commit -m "Deploy $(date '+%Y-%m-%d %H:%M')"
+git push
+
 echo "==> Done."
