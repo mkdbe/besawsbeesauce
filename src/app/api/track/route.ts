@@ -7,6 +7,8 @@ export async function POST(req: NextRequest) {
     if (!sessionId) return NextResponse.json({ ok: true })
 
     const { ip, ua, device, browser, os, location } = parseVisitorInfo(req)
+    const excluded = (process.env.ANALYTICS_EXCLUDED_IPS ?? '38.49.72.41').split(',').map(s => s.trim())
+    if (excluded.includes(ip)) return NextResponse.json({ ok: true })
     const data = readAnalytics()
     const visit = data.visits.find((v) => v.sessionId === sessionId)
 

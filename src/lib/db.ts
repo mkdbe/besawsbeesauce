@@ -50,6 +50,25 @@ function migrate(db: Database.Database) {
       home_slot   INTEGER,
       created_at  TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS orders (
+      id             TEXT PRIMARY KEY,
+      created_at     TEXT NOT NULL,
+      customer_email TEXT NOT NULL DEFAULT '',
+      customer_name  TEXT NOT NULL DEFAULT '',
+      amount_total   INTEGER NOT NULL DEFAULT 0,
+      status         TEXT NOT NULL DEFAULT 'completed'
+    );
+
+    CREATE TABLE IF NOT EXISTS order_items (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      order_id     TEXT NOT NULL REFERENCES orders(id),
+      product_id   TEXT NOT NULL DEFAULT '',
+      product_name TEXT NOT NULL DEFAULT '',
+      quantity     INTEGER NOT NULL DEFAULT 1,
+      unit_price   INTEGER NOT NULL DEFAULT 0,
+      amount       INTEGER NOT NULL DEFAULT 0
+    );
   `)
   // Add price column to existing DBs that don't have it yet
   try {
