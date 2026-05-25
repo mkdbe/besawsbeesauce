@@ -73,7 +73,6 @@ export default function AnalyticsPage() {
   const [visits, setVisits] = useState<Visit[]>([])
   const [loading, setLoading] = useState(true)
   const [showBots, setShowBots] = useState(false)
-  const [pathPopup, setPathPopup] = useState<{ pages: string[]; x: number; y: number } | null>(null)
   const [lastUpdated, setLastUpdated] = useState('')
 
   const load = useCallback(async () => {
@@ -91,12 +90,6 @@ export default function AnalyticsPage() {
   }, [])
 
   useEffect(() => { load() }, [load])
-
-  useEffect(() => {
-    const close = () => setPathPopup(null)
-    document.addEventListener('click', close)
-    return () => document.removeEventListener('click', close)
-  }, [])
 
   const allVisits = visits
   const humanCount = allVisits.filter(isHuman).length
@@ -266,7 +259,7 @@ export default function AnalyticsPage() {
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-                    {['Time (EST)', 'IP', 'Location', 'Device', 'Browser', 'Duration', 'Clicks', 'Pages', 'Source', 'Type'].map(h => (
+                    {['Time (EST)', 'IP', 'Location', 'Device', 'Browser', 'Duration', 'Clicks', 'Pages Visited', 'Source', 'Type'].map(h => (
                       <th key={h} style={{ fontFamily: 'var(--mono)', fontSize: 10, fontWeight: 400, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted)', padding: '9px 12px', textAlign: 'left', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
                   </tr>
@@ -291,17 +284,14 @@ export default function AnalyticsPage() {
                         {td(v.browser || '—')}
                         {td(fmtDur(v.duration || 0))}
                         {td(v.navigations || 0, true)}
-                        {td(
-                          <span
-                            style={{ cursor: 'pointer', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: 3 }}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              const rect = (e.target as HTMLElement).getBoundingClientRect()
-                              setPathPopup({ pages, x: rect.left, y: rect.top })
-                            }}
-                          >{pages.length}</span>,
-                          true
-                        )}
+                        <td style={{ fontFamily: 'var(--mono)', fontSize: 11, padding: '8px 12px', color: 'var(--dim)', maxWidth: 200 }}>
+                          {pages.map((p, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap' }}>
+                              {i > 0 && <span style={{ color: 'var(--accent)', fontSize: 9 }}>→</span>}
+                              <span style={{ color: i === 0 ? 'var(--text)' : 'var(--dim)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p}</span>
+                            </div>
+                          ))}
+                        </td>
                         {td(getSource(v))}
                         {td(<span style={chipStyle(human ? 'rgba(130,200,130,0.5)' : 'rgba(200,130,130,0.4)')}>{human ? '✓ human' : '✗ bot'}</span>)}
                       </tr>
@@ -315,22 +305,6 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Path popup */}
-      {pathPopup && (
-        <div onClick={e => e.stopPropagation()} style={{
-          position: 'fixed', left: pathPopup.x, top: pathPopup.y - 8, transform: 'translateY(-100%)',
-          background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.15)',
-          padding: '8px 14px', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--muted)',
-          zIndex: 100, maxWidth: 'min(90vw,1140px)', display: 'flex', flexWrap: 'wrap', gap: '0 4px'
-        }}>
-          {pathPopup.pages.map((p, i) => (
-            <span key={i} style={{ display: 'flex', alignItems: 'center' }}>
-              {i > 0 && <span style={{ color: 'var(--accent)', margin: '0 6px', fontSize: 10 }}>→</span>}
-              <span style={{ color: 'var(--text)' }}>{p}</span>
-            </span>
-          ))}
-        </div>
-      )}
     </>
   )
 }
