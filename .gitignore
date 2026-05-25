@@ -45,5 +45,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# uploaded product photos (stored on server, not in repo)
+/public/uploads/
+
 # uploaded product photos
 /public/uploads/

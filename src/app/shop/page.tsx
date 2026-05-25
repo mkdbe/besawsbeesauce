@@ -39,7 +39,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       </div>
 
       {/* Category filter */}
-      <div className="flex flex-wrap gap-2 mb-10">
+      <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm -mx-4 px-4 py-3 mb-8 border-b border-amber-100 flex flex-wrap gap-2">
         {categories.map((cat) => {
           const isActive = (category ?? 'all') === cat.value
           return (
