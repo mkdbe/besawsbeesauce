@@ -24,6 +24,7 @@ export default function AboutPage() {
                 alt="Besaw's Bee Sauce"
                 width={300}
                 height={242}
+                sizes="(max-width: 640px) 192px, (max-width: 768px) 256px, 288px"
                 className="float-right ml-8 mb-4 rounded-xl shadow-md w-48 sm:w-64 md:w-72"
               />
             )}

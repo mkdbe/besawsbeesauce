@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import path from 'path'
+import { processUploadedImage } from '@/lib/image-process'
 
-const MAX_SIZE = 8 * 1024 * 1024 // 8 MB
+const MAX_SIZE = 8 * 1024 * 1024
 
 export async function POST(req: NextRequest) {
   const formData = await req.formData()
@@ -13,11 +14,17 @@ export async function POST(req: NextRequest) {
   if (file.size > MAX_SIZE) return NextResponse.json({ error: 'File too large (max 8 MB)' }, { status: 400 })
 
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const stem = `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  const tempFilename = `${stem}.${ext}`
   const uploadDir = path.join(process.cwd(), 'public', 'uploads')
 
   await mkdir(uploadDir, { recursive: true })
-  await writeFile(path.join(uploadDir, filename), Buffer.from(await file.arrayBuffer()))
+  const tempPath = path.join(uploadDir, tempFilename)
+  await writeFile(tempPath, Buffer.from(await file.arrayBuffer()))
 
-  return NextResponse.json({ url: `/api/uploads/${filename}` })
+  // Optimize + create mobile variant in background (does not block response)
+  const finalPath = path.join(uploadDir, `${stem}.webp`)
+  processUploadedImage(tempPath).catch((err) => console.error('image-process error:', err))
+
+  return NextResponse.json({ url: `/api/uploads/${stem}.webp` })
 }

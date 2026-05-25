@@ -10,7 +10,8 @@ export default function Footer() {
             src="/logo.jpg"
             alt="Besaw's Bee Sauce"
             width={100}
-            height={100}
+            height={81}
+            sizes="100px"
             className="rounded-lg mb-4"
           />
           <p className="text-sm text-amber-300 italic">It&apos;s honey though.</p>
