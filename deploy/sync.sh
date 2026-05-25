@@ -19,6 +19,8 @@ rsync -avz --delete \
   --exclude='.env*' \
   --exclude='data/' \
   --exclude='public/uploads/' \
+  --exclude='CLAUDE.md' \
+  --exclude='AGENTS.md' \
   "$LOCAL_DIR/" \
   "$REMOTE:$REMOTE_DIR/"
 
