@@ -1,0 +1,15 @@
+[Unit]
+Description=Besaw's Bee Sauce (besawsbeesauce.com)
+After=network.target
+
+[Service]
+Type=simple
+User=mdbe
+WorkingDirectory=/var/www/besawsbeesauce.com
+ExecStart=/usr/local/bin/node22 node_modules/next/dist/bin/next start -p 3007
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
