@@ -23,7 +23,7 @@ export default function AdminNav() {
 
   return (
     <nav className="bg-amber-900 text-white px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-      <span className="font-bold text-amber-200 text-sm leading-tight">Bee Sauce<br />Admin</span>
+      <span className="font-bold text-amber-200 text-sm leading-tight">{'Bee Sauce '}<br className="md:hidden" />{'Admin'}</span>
       {links.map((l) => (
         <Link
           key={l.href}
