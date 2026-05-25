@@ -295,9 +295,9 @@ export default function AnalyticsPage() {
                           <span
                             style={{ cursor: 'pointer', textDecoration: 'underline', textDecorationStyle: 'dotted', textUnderlineOffset: 3 }}
                             onClick={(e) => {
-                              e.stopPropagation()
+                              e.nativeEvent.stopImmediatePropagation()
                               const rect = (e.target as HTMLElement).getBoundingClientRect()
-                              setPathPopup({ pages, x: rect.left, y: rect.bottom + 6 })
+                              setPathPopup(prev => prev ? null : { pages, x: rect.left, y: rect.bottom + 6 })
                             }}
                           >{pages.length}</span>,
                           true
