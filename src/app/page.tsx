@@ -11,7 +11,8 @@ export default function HomePage() {
   const inv = getAllInventory()
   const featured = getHomeFeatured()
   const heroImage = getContent('hero_image')
-  const hasImage = Boolean(heroImage)
+  const heroEnabled = getContent('hero_image_enabled') !== '0'
+  const hasImage = Boolean(heroImage) && heroEnabled
 
   return (
     <>

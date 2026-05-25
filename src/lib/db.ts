@@ -129,6 +129,7 @@ function seedSiteContent(db: Database.Database) {
 
   db.prepare('INSERT OR IGNORE INTO site_content (key, value) VALUES (?, ?)').run('about_body', aboutBody)
   db.prepare('INSERT OR IGNORE INTO site_content (key, value) VALUES (?, ?)').run('hero_image', '')
+  db.prepare('INSERT OR IGNORE INTO site_content (key, value) VALUES (?, ?)').run('hero_image_enabled', '1')
 }
 
 function seedBlogPosts(db: Database.Database) {
