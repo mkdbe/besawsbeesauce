@@ -1,26 +1,36 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import ProductCard from '@/components/shop/ProductCard'
 import { getHomeFeatured } from '@/lib/products'
 import { getAllInventory } from '@/lib/inventory'
+import { getContent } from '@/lib/content'
 
 export const dynamic = 'force-dynamic'
 
 export default function HomePage() {
   const inv = getAllInventory()
   const featured = getHomeFeatured()
+  const heroImage = getContent('hero_image')
+  const hasImage = Boolean(heroImage)
 
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-amber-100 to-amber-200 py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-amber-600 text-sm font-medium uppercase tracking-widest mb-4">
+      <section className={`relative py-24 px-4 overflow-hidden ${!hasImage ? 'bg-gradient-to-br from-amber-100 to-amber-200' : ''}`}>
+        {hasImage && (
+          <>
+            <Image src={heroImage} alt="" fill className="object-cover" priority />
+            <div className="absolute inset-0 bg-amber-950/60" />
+          </>
+        )}
+        <div className="relative max-w-3xl mx-auto text-center">
+          <p className={`text-sm font-medium uppercase tracking-widest mb-4 ${hasImage ? 'text-amber-300' : 'text-amber-600'}`}>
             Small-batch &bull; Family hives &bull; Rochester, NY
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl font-bold text-amber-900 leading-tight mb-6">
+          <h1 className={`font-serif text-5xl md:text-6xl font-bold leading-tight mb-6 ${hasImage ? 'text-white' : 'text-amber-900'}`}>
             Pure honey, straight from the hive.
           </h1>
-          <p className="text-lg text-amber-700 max-w-xl mx-auto mb-10">
+          <p className={`text-lg max-w-xl mx-auto mb-10 ${hasImage ? 'text-amber-100' : 'text-amber-700'}`}>
             Raw, unfiltered honey and handcrafted bee products — made with care from our backyard hives.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -32,7 +42,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/about"
-              className="border border-amber-400 text-amber-800 hover:bg-amber-100 font-semibold px-8 py-3 rounded-xl transition-colors"
+              className={`border font-semibold px-8 py-3 rounded-xl transition-colors ${hasImage ? 'border-amber-300 text-amber-100 hover:bg-amber-800/50' : 'border-amber-400 text-amber-800 hover:bg-amber-100'}`}
             >
               Our Story
             </Link>

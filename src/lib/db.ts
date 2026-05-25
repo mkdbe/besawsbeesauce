@@ -69,6 +69,11 @@ function migrate(db: Database.Database) {
       unit_price   INTEGER NOT NULL DEFAULT 0,
       amount       INTEGER NOT NULL DEFAULT 0
     );
+
+    CREATE TABLE IF NOT EXISTS site_content (
+      key   TEXT PRIMARY KEY,
+      value TEXT NOT NULL DEFAULT ''
+    );
   `)
   // Add price column to existing DBs that don't have it yet
   try {
@@ -91,6 +96,7 @@ function migrate(db: Database.Database) {
   seedBlogPosts(db)
   seedInventory(db)
   seedCustomProducts(db)
+  seedSiteContent(db)
 }
 
 function seedCustomProducts(db: Database.Database) {
@@ -110,6 +116,19 @@ function seedCustomProducts(db: Database.Database) {
   for (const s of seeds) {
     insert.run(s.id, s.name, s.slug, s.description, s.price, s.category, s.image, s.featured)
   }
+}
+
+function seedSiteContent(db: Database.Database) {
+  const aboutBody = [
+    "It started with curiosity. A couple of hives in the backyard, a lot of YouTube videos, and a willingness to get stung more than we probably should have. We're the Besaw family, and we've been keeping bees in Rochester, NY since 2017.",
+    "What began as a hobby quickly became something we cared deeply about. Watching a colony build, thrive, and survive a brutal upstate winter is one of the most rewarding things we've experienced. And the honey — the honey is unlike anything you'll find at a grocery store.",
+    "Every product we make starts in those hives. Our honey is raw and unfiltered, harvested by hand and never heated above hive temperature. Our lip balms and bath products are made in small batches using our own beeswax and honey — no synthetic fragrances, no shortcuts.",
+    "We're not a factory. We're a family who loves bees, loves what they make, and wants to share it with people who care about where their food and products come from.",
+    "Thank you for supporting our little operation. It means everything to us.",
+  ].join('\n\n')
+
+  db.prepare('INSERT OR IGNORE INTO site_content (key, value) VALUES (?, ?)').run('about_body', aboutBody)
+  db.prepare('INSERT OR IGNORE INTO site_content (key, value) VALUES (?, ?)').run('hero_image', '')
 }
 
 function seedBlogPosts(db: Database.Database) {

@@ -9,6 +9,7 @@ const links = [
   { label: 'Blog Posts', href: '/admin/blog' },
   { label: 'Sales', href: '/admin/sales' },
   { label: 'Analytics', href: '/admin/analytics' },
+  { label: 'Content', href: '/admin/content' },
 ]
 
 export default function AdminNav() {
